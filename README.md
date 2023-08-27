@@ -6,17 +6,17 @@ Python Flask web dashboard for Binance API with real-time charts, trade executio
 ```
 git clone https://github.com/ozgvr/binance-trader.git
 ```
-
 #### 2. Install required libraries
+In project directory run a pip install on requirements file
 ```
 python -m pip install -r requirements.txt
 ```
 #### 3. Create a .env file with your Binance API credentials
 ```
 API_KEY=XXX
-API_SECRET=XXX
-
+SECRET_KEY=XXX
 ```
+Template for required .env file is available as .env.template
 #### 4. Run Flask server
 `python app.py`
 #### 5. Open web dashboard in your browser
