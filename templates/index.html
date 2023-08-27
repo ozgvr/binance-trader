@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binance Trader</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body data-bs-theme="dark" onload="fetchBalances()">
+    <section class="bg-body-tertiary">
+        <header class="container">
+            <nav class="navbar">
+                <div class="container-fluid d-flex justify-content-between">
+                  <a class="navbar-brand" href="#">Binance Trader</a>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="darkModeSwitch" checked>
+                    <label class="form-check-label" for="darkModeSwitch">
+                        <i class="bi bi-moon-stars-fill"></i>
+                    </label>
+                  </div>                
+              </nav>          
+        </header>
+    </section>
+    <section>
+        <div class="container-fluid p-0">
+            <form id="fetch-form" class="d-flex">
+                <input id="symbol-input" type="text" class="form-control border-end-0 border-start-0 rounded-0 mb-2" placeholder="Symbol">
+                <button id="fetch-btn" type="submit" class="btn btn-secondary rounded-0 mb-2 d-none">Fetch</button>
+            </form>
+        </div>
+    </section>
+    <div class="container">
+        <div id="alert" style="position: absolute; z-index:100; top: 0; right:10px"></div>
+        <div class="row p-2">
+            <div class="col-12 col-lg-6 mb-3">
+                <h2 class="mb-0">
+                    <span id="cryptoBase"></span>
+                    <span id="cryptoQuote" class="text-muted fw-light"></span>
+                </h2>
+                <h4>
+                    <span id="cryptoPrice"></span>
+                    <span id="cryptoChange"></span>
+                </h4>
+                <canvas id="cryptoChart"></canvas>
+                <div id="timeframes" class="d-none d-flex gap-1 justify-content-center">
+                    <button value="1m" type="button" class="btn btn-outline-secondary btn-timeframe mb-2">1</button>
+                    <button value="5m" type="button" class="btn btn-outline-secondary btn-timeframe mb-2">5</button>
+                    <button value="15m" type="button" class="btn btn-outline-secondary btn-timeframe mb-2">15</button>
+                    <button value="30m" type="button" class="btn btn-outline-secondary btn-timeframe mb-2">30</button>
+                    <button value="1h" type="button" class="btn btn-outline-secondary btn-timeframe mb-2">1H</button>
+                    <button value="4h" type="button" class="btn btn-outline-secondary btn-timeframe mb-2">4H</button>
+                    <button value="1d" type="button" class="btn btn-outline-secondary btn-timeframe mb-2">D</button>
+                    <button value="1w" type="button" class="btn btn-outline-secondary btn-timeframe mb-2">W</button>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6">
+                <h2 class="mb-0">Trade <span id="selectedTicker"></span>
+                </h2>              
+                <input type="range" value="0" class="form-range" min="0" max="1" step="0.10" id="orderPercentage" style="appearance: revert;">
+                <label for="orderPercentage" class="form-label text-muted">Order size : %0</label>
+                <div class="row g-2">
+                    <div class="col">
+                        <button id="buy-btn" type="button" class="btn btn-success mb-2 w-100">Buy</button>
+                    </div>
+                    <div class="col">
+                        <button id="sell-btn" type="button" class="btn btn-danger mb-2 w-100">Sell</button>
+                    </div>
+                </div>
+                <h3>Balance</h3>
+                <div class="row g-2">
+                    <ul id="balances" class="list-group">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{url_for('static', filename='api.js')}}"></script>
+    <script src="{{url_for('static', filename='chart.js')}}"></script>
+    <script src="{{url_for('static', filename='alert.js')}}"></script>
+    <script src="{{url_for('static', filename='rangeslider.js')}}"></script>
+    <script src="{{url_for('static', filename='darkmode.js')}}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>
