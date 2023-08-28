@@ -42,9 +42,7 @@ def step_size_to_precision(step_size):
     
 def update_balance(symbol, balance):
     symbol = symbol.upper()
-    step_size = get_step_size(symbol)
-    precision = step_size_to_precision(step_size)
-    balance = "{:.{}f}".format(balance, precision)
+    balance = str(round_step_size(balance, get_step_size(symbol)))
     if int(float(balance))==0:
         balance = "0"
     with open('data.json') as f:
