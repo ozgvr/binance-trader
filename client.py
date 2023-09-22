@@ -39,45 +39,34 @@ def step_size_to_precision(step_size):
     for i in range(len(decimals)):
         if decimals[i] != "0":
             return i+1
-    
-def update_balance(symbol, balance):
-    symbol = symbol.upper()
-    balance = str(round_step_size(balance, get_step_size(symbol)))
-    if int(float(balance))==0:
-        balance = "0"
-    with open('data.json') as f:
-        data = json.load(f)
-        if balance == "0":
-            data.pop(symbol, None)
-        elif symbol in data:
-            data[symbol]["quantity"] = balance
-        else:
-            data[symbol] = {"quantity": balance}
-    with open('data.json', 'w') as f:
-        json.dump(data, f)
+
 
 def get_balance(symbol):
     symbol = symbol.upper()
-    with open('data.json') as f:
-        data = json.load(f)
-        info = data.get(symbol, None)
-        if info:
-            return Decimal(info.get("quantity", 0))
-        else:
-            return Decimal(0)
+    info = client.get_asset_balance(asset=symbol)
+    if info:
+        free = info.get("free", 0)
+        balance = str(round_step_size(free, get_step_size(symbol)))
+        return Decimal(balance)
+    else:
+        return Decimal(0)
 
 def get_all_balances():
+    balances = {}
+    client_balance = client.get_account()
+    for symbol in client_balance["balances"]:
+        if float(symbol["free"]) == 0:
+            continue
+        balances[symbol["asset"]] = {"quantity": symbol["free"]} 
     prices = {}
     api_prices = client.get_all_tickers()
     for symbol in api_prices:
         prices[symbol["symbol"]] = symbol["price"]
     
-    with open('data.json') as f:
-        data = json.load(f)
-        for symbol in data:
-            if symbol != "USDT":
-                data[symbol]["current_price"] = prices[symbol + "USDT"]
-        return data
+    for symbol in balances:
+        if symbol != "USDT":
+            balances[symbol]["current_price"] = prices[symbol + "USDT"]
+    return balances
         
 
 def buy(symbol, size):
@@ -86,9 +75,6 @@ def buy(symbol, size):
     quantity = Decimal(get_balance("USDT") * Decimal(size))
     quantity = round_step_size(quantity, get_step_size("USDT"))
     order = client.create_order(symbol=symbol + "USDT", side=client.SIDE_BUY, type=client.ORDER_TYPE_MARKET, quoteOrderQty=quantity)
-
-    update_balance(symbol, Decimal(get_balance(symbol) + Decimal(order["executedQty"])))
-    update_balance("USDT", Decimal(get_balance("USDT") - Decimal(order["cummulativeQuoteQty"])))
     
     return order
 
@@ -98,8 +84,5 @@ def sell(symbol, size):
     quantity = Decimal(get_balance(symbol) * Decimal(size))
     quantity = round_step_size(quantity, get_step_size(symbol))
     order = client.create_order(symbol=symbol + "USDT", side=client.SIDE_SELL, type=client.ORDER_TYPE_MARKET, quantity=quantity)
-
-    update_balance(symbol, Decimal(get_balance(symbol) - Decimal(order["executedQty"])))
-    update_balance("USDT", Decimal(get_balance("USDT") + Decimal(order["cummulativeQuoteQty"])))
     
     return order
