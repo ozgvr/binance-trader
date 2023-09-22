@@ -46,11 +46,11 @@ def route_sell():
 @app.get('/balance')
 def route_balance():
     try:
-        balances = get_all_balances()
+        balances, total = get_all_balances()
     except Exception as e:
         return jsonify({'error': str(e)})
     
-    return jsonify({'balances': balances})
+    return jsonify({'total': "%.2f" % total, 'balances': balances})
 
 if __name__ == '__main__':
     app.run("127.0.0.1",port="5555",debug=True)

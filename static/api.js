@@ -95,6 +95,8 @@ async function fetchBalances() {
     const response = await fetch(`${url}/balance`);
     const data = await response.json();
     const balancesList = document.getElementById('balances');
+    const totalValue = document.getElementById('total-value');
+    totalValue.textContent = "$ " + data.total;
     balancesList.innerHTML = '';
     for (const [balance, info] of Object.entries(data.balances)) {
         const listItem = document.createElement('li');
@@ -108,9 +110,14 @@ async function fetchBalances() {
         listItem.appendChild(listSymbol);
         const line = document.createElement('p');
         line.className = 'd-flex justify-content-between mb-0';
-        const listCurrent = document.createElement('span');
-        listCurrent.className = 'text-muted';
-        line.appendChild(listCurrent);
+        const listCurrentPrice = document.createElement('span');
+        listCurrentPrice.className = 'text-muted';
+        listCurrentPrice.textContent = "$ " + info.current_price;
+        const listCurrentValue = document.createElement('span');
+        listCurrentValue.className = 'text-muted';
+        listCurrentValue.textContent = "$ " + info.current_value;
+        line.appendChild(listCurrentPrice);
+        line.appendChild(listCurrentValue);
         listItem.appendChild(listBalance);
         listItem.appendChild(line);
         balancesList.appendChild(listItem);

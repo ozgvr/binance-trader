@@ -63,10 +63,16 @@ def get_all_balances():
     for symbol in api_prices:
         prices[symbol["symbol"]] = symbol["price"]
     
+    total = 0
     for symbol in balances:
-        if symbol != "USDT":
-            balances[symbol]["current_price"] = prices[symbol + "USDT"]
-    return balances
+        if not symbol == "USDT":
+            balances[symbol]["current_price"] = float(prices[symbol + "USDT"])
+            balances[symbol]["current_value"] = "%.2f" % (float(prices[symbol + "USDT"])*float(balances[symbol]["quantity"]))
+        else:
+            balances[symbol]["current_price"] = 1.00
+            balances[symbol]["current_value"] = "%.2f" % float(balances[symbol]["quantity"])
+        total += float(balances[symbol]["current_value"])
+    return balances, total
         
 
 def buy(symbol, size):
