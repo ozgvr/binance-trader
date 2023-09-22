@@ -61,16 +61,7 @@ function fetchAndUpdateData(symbol, interval) {
 }
 
 document.getElementById('fetch-form').addEventListener('submit', async function (event) {
-    event.preventDefault();
-    const symbol = document.getElementById('symbol-input').value.toUpperCase();
-
-    // Clear the previous update interval if it exists
-    if (updateInterval) {
-        clearTimeout(updateInterval);
-    }
-
-    interval = sessionStorage.getItem('interval') || '1d';
-    fetchAndUpdateData(symbol,interval);
+    window.location.hash = document.getElementById('symbol-input').value;
 });
 
 
@@ -124,4 +115,33 @@ function updateChart(labels, prices) {
         myChart.data.datasets[0].backgroundColor = 'rgba(25,135,84,0.3)';
     }
     myChart.update();
+}
+
+
+
+
+var hashValue = window.location.hash
+
+window.addEventListener('hashchange', function() {
+    var symbol = window.location.hash.substring(1); // Get the new hash value
+
+    document.getElementById('symbol-input').value = symbol.toUpperCase();
+    // Clear the previous update interval if it exists
+    if (updateInterval) {
+        clearTimeout(updateInterval);
+    }
+    interval = sessionStorage.getItem('interval') || '1d';
+    fetchAndUpdateData(symbol,interval);
+});
+
+
+if (hashValue) {
+    var symbol = hashValue.substring(1);
+    document.getElementById('symbol-input').value = symbol.toUpperCase();
+    // Clear the previous update interval if it exists
+    if (updateInterval) {
+        clearTimeout(updateInterval);
+    }
+    interval = sessionStorage.getItem('interval') || '1d';
+    fetchAndUpdateData(symbol,interval);
 }
