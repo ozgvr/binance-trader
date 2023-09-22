@@ -48,7 +48,6 @@ def route_balance():
     try:
         balances = get_all_balances()
     except Exception as e:
-        print(e)
         return jsonify({'error': str(e)})
     
     return jsonify({'balances': balances})
