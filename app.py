@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 from client import buy, sell, get_all_balances
+from decimal import Decimal
 
 app = Flask(__name__)
 
@@ -16,7 +17,7 @@ def route_buy():
 
     try:
         try:
-            order = buy(symbol,size)
+            order = buy(symbol,Decimal(size))
         except Exception as e:
             return jsonify({'error': str(e)})
             
@@ -34,7 +35,7 @@ def route_sell():
 
     try:
         try:
-            order = sell(symbol,size)
+            order = sell(symbol,Decimal(size))
         except Exception as e:
             return jsonify({'error': str(e)})
             
