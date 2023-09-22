@@ -21,18 +21,8 @@ python -m pip install -r requirements.txt
 API_KEY=XXX
 SECRET_KEY=XXX
 ```
-#### 4. Update data.json
-data.json is the file for storing your balances for the trades you make in the app. For initial usage, set your Binance cryptocurrency balances that you want to include in the app. For example, you can set a 50 USDT balance as: 
-```
-{
-  "USDT": {
-    "quantity": "50.00"
-  }
-}
-```
-Make sure that balances you set are not exceeding what you own in your Binance wallet, or the app will throw 'Insufficient funds' error for your invalid trades.
-#### 5. Run Flask server
+#### 4. Run Flask server
 `python app.py`
-#### 6. Open web dashboard in your browser
+#### 5. Open web dashboard in your browser
 [http://127.0.0.1:5555](http://127.0.0.1:5555 "http://127.0.0.1:5555")
 Default host for the server is 127.0.0.1 with port 5555. You can edit them from the app.py file.
