@@ -56,6 +56,7 @@ function updateChartData(symbol, interval) {
 }
 
 function fetchAndUpdateData(symbol, interval) {
+    fetchBalances();
     updateChartData(symbol, interval);
     updateInterval = setTimeout(() => fetchAndUpdateData(symbol, interval), UPDATE_INTERVAL);
 }
