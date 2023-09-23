@@ -98,11 +98,14 @@ async function fetchBalances() {
     const totalValue = document.getElementById('total-value');
     totalValue.textContent = "$ " + data.total;
     balancesList.innerHTML = '';
-    for (const [balance, info] of Object.entries(data.balances)) {
+    let balances = Object.entries(data.balances);
+    balances.sort((a, b) => b[1].current_value - a[1].current_value);
+    for (const [balance, info] of balances) {
         const listItem = document.createElement('li');
-        listItem.className = 'list-group-item align-items-center justify-content-between';
-        const listSymbol = document.createElement('span');
-        listSymbol.className = 'fs-5 fw-bold';
+        listItem.className = 'list-group-item list-group-item-action align-items-center justify-content-between';
+        const listSymbol = document.createElement('a');
+        listSymbol.className = 'fs-5 fw-bold text-reset text-decoration-none stretched-link';
+        listSymbol.href = `#${balance}`;
         listSymbol.textContent = balance;
         const listBalance = document.createElement('span');
         listBalance.className = 'float-end align-self-center';
