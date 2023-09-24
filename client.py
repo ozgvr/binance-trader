@@ -37,7 +37,7 @@ def get_step_size(symbol):
         return LOT_SIZE
     filters = symbol_info.get(symbol + "USDT", {}).get("filters", [])
     step_size = next((f["stepSize"] for f in filters if f["filterType"] == "LOT_SIZE"), LOT_SIZE)
-    return step_size
+    return Decimal(step_size)
 
 def step_size_to_precision(step_size):
     """
@@ -68,6 +68,7 @@ def get_balance(symbol):
     info = client.get_asset_balance(asset=symbol)
     if info:
         free = info.get("free", 0)
+        free = Decimal(free)
         balance = str(round_step_size(free, get_step_size(symbol)))
         return Decimal(balance)
     else:
