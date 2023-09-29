@@ -17,9 +17,11 @@ LOT_SIZE = 0.01
 
 exchange_info = client.get_exchange_info()
 symbol_info = {}
+symbol_list = {}
 for symbol in exchange_info["symbols"]:
     if symbol["status"] == "TRADING" and symbol["quoteAsset"] == "USDT" and not "LEVERAGED" in symbol["permissions"]:
         symbol_info[symbol["symbol"]] = symbol
+        symbol_list[symbol["symbol"]] = ""
 
 
 def get_step_size(symbol):
@@ -140,3 +142,11 @@ def sell(symbol, size):
     order = client.create_order(symbol=symbol + USDT_SYMBOL, side=client.SIDE_SELL, type=client.ORDER_TYPE_MARKET, quantity=quantity)
     
     return order
+
+def all_symbols():
+    tickers = client.get_ticker()
+    for ticker in tickers:
+        if not ticker["symbol"] in symbol_list:
+            continue
+        symbol_list[ticker["symbol"]] = {"price" : ticker["lastPrice"], "change" : ticker["priceChangePercent"]}
+    return symbol_list

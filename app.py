@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template
-from client import buy, sell, get_all_balances
+from client import buy, sell, get_all_balances, all_symbols
 from decimal import Decimal
 
 app = Flask(__name__)
@@ -52,6 +52,14 @@ def route_balance():
         return jsonify({'error': str(e)})
     
     return jsonify({'total': "%.2f" % total, 'balances': balances})
+
+@app.get('/list')
+def route_list():
+    try:
+        symbols = all_symbols()
+    except Exception as e:
+        return jsonify({'error': str(e)})
+    return symbols 
 
 if __name__ == '__main__':
     app.run("127.0.0.1",port="5555",debug=True)
