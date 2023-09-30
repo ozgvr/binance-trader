@@ -144,9 +144,10 @@ def sell(symbol, size):
     return order
 
 def all_symbols():
+    result = []
     tickers = client.get_ticker()
     for ticker in tickers:
         if not ticker["symbol"] in symbol_list:
             continue
-        symbol_list[ticker["symbol"]] = {"price" : ticker["lastPrice"], "change" : ticker["priceChangePercent"]}
-    return symbol_list
+        result.append({"name": ticker["symbol"], "price" : ticker["lastPrice"], "change" : ticker["priceChangePercent"]})
+    return result
