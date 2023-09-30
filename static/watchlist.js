@@ -5,7 +5,7 @@ function handleResponse(res){
     
     return res.map(item => {
         const newItem = {...item};
-        newItem.favorite = favorites.includes(item.name) ? "♥" : "♡";
+        newItem.favorite = favorites.includes(item.name);
         return newItem;
     });
 
@@ -19,25 +19,31 @@ function formatPrice(value, row){
     return parseFloat(value).toString();
 }
 
+function formatFavorite(value, row){
+    return "★"
+}
+
 function styleFavorite(value, row, index) {
-    if (value == "♥") {
+    if (value==true) {
       return {
-        classes: "text-danger", css: { cursor: "pointer"}
+        classes: "text-warning", css: { cursor: "pointer"}
       }
     }
     return {
-        classes: "text-secondary", css: { cursor: "pointer"}
+        classes: "text-body-tertiary", css: { cursor: "pointer"}
     }
   }
 
 function formatChange(value, row){
+    value = parseFloat(value).toFixed(2);
+
     if(value>0){
         return '<span class="text-success">'+ "+" + value + "%" + '</span>'
-    }else if(value<0){
-        return '<span class="text-danger">' + value + "%" + '</span>'
-    }else{
-        return '<span class="text-secondary">' + "-" + value + "%" + '</span>'
     }
+    else if(value<0){
+        return '<span class="text-danger">' + value + "%" + '</span>'
+    }
+    return '<span class="text-secondary">' + "-" + value + "%" + '</span>'
 }
 
 function addToFavorites(symbol) {
@@ -70,7 +76,7 @@ function removeFromFavorites(symbol) {
 
 $('#list').on('click-cell.bs.table', function (e, field, value, row, element) {
     if (field == "favorite") {
-        if (value == "♡") {
+        if (!value) {
             addToFavorites(row.name);
             $('#list').bootstrapTable('load', handleResponse($('#list').bootstrapTable('getData')));
         } else {
