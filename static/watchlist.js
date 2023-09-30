@@ -22,11 +22,11 @@ function formatPrice(value, row){
 function styleFavorite(value, row, index) {
     if (value == "♥") {
       return {
-        classes: "text-danger"
+        classes: "text-danger", css: { cursor: "pointer"}
       }
     }
     return {
-        classes: "text-secondary"
+        classes: "text-secondary", css: { cursor: "pointer"}
     }
   }
 
